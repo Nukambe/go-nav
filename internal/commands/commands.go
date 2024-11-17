@@ -18,9 +18,10 @@ type Commands map[string]command
 
 func InitCommands() Commands {
 	cmds := Commands{}
+	cmds.registerCommand(quitCommand)
 	cmds.registerCommand(upCommand)
 	cmds.registerCommand(downCommand)
-	cmds.registerCommand(quitCommand)
+	cmds.registerCommand(rightCommand)
 	return cmds
 }
 
@@ -52,7 +53,7 @@ func (cmds Commands) ReadCommand(state *syscall.Termios, dir *nav.Directory) {
 		case 66:
 			cmds["down"].callback(dir)
 		case 67:
-			cmds["up"].callback(dir)
+			cmds["right"].callback(dir)
 		case 68:
 			cmds["up"].callback(dir)
 		}
