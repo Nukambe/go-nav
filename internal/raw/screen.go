@@ -44,10 +44,10 @@ func DrawScreen(dir *nav.Directory) {
 		}
 	}
 
-	fmt.Println("Files:")
-	for _, file := range dir.Files {
-		fmt.Printf("	%s\n", file)
-	}
+	//fmt.Println("Files:")
+	//for _, file := range dir.Files {
+	//	fmt.Printf("	%s\n", file)
+	//}
 }
 
 // getScreenSize

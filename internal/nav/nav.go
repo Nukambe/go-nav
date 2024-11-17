@@ -6,6 +6,8 @@ import (
 	"strings"
 )
 
+const NO_SUBDIRECTORIES = "no subdirectories..."
+
 type Directory struct {
 	Pwd         string
 	Directories []string
@@ -20,6 +22,9 @@ func (dir *Directory) GetDirectory() {
 		return
 	}
 
+	dir.Directories = []string{}
+	dir.Files = []string{}
+
 	for _, item := range items {
 		if item.IsDir() {
 			dir.Directories = append(dir.Directories, item.Name())
@@ -27,6 +32,8 @@ func (dir *Directory) GetDirectory() {
 			dir.Files = append(dir.Files, item.Name())
 		}
 	}
+
+	dir.Target = 0
 }
 
 func (dir *Directory) GetPreview() string {
@@ -34,7 +41,7 @@ func (dir *Directory) GetPreview() string {
 	next.GetDirectory()
 
 	if len(next.Directories) < 1 {
-		return "no subdirectories..."
+		return NO_SUBDIRECTORIES
 	}
 	return "/" + strings.Join(next.Directories, ", /")
 }
