@@ -18,6 +18,7 @@ func EnableRawMode() (*syscall.Termios, error) {
 
 	// Get terminal settings
 	var oldState syscall.Termios
+	// #nosec G103: Use of syscall is intentional and reviewed
 	if _, _, err := syscall.Syscall6(syscall.SYS_IOCTL, uintptr(os.Stdin.Fd()), uintptr(syscall.TCGETS), uintptr(unsafe.Pointer(&oldState)), 0, 0, 0); err != 0 {
 		return nil, err
 	}
@@ -29,6 +30,7 @@ func EnableRawMode() (*syscall.Termios, error) {
 	newState.Cc[syscall.VTIME] = 0                   // No timeout
 
 	// apply new settings
+	// #nosec G103: Use of syscall is intentional and reviewed
 	if _, _, err := syscall.Syscall6(syscall.SYS_IOCTL, uintptr(os.Stdin.Fd()), uintptr(syscall.TCSETS), uintptr(unsafe.Pointer(&newState)), 0, 0, 0); err != 0 {
 		return nil, err
 	}
@@ -38,6 +40,7 @@ func EnableRawMode() (*syscall.Termios, error) {
 
 func restoreRawMode(state *syscall.Termios) {
 	// Restore the old terminal settings
+	// #nosec G103: Use of syscall is intentional and reviewed
 	if _, _, err := syscall.Syscall6(syscall.SYS_IOCTL, uintptr(os.Stdin.Fd()), uintptr(syscall.TCSETS), uintptr(unsafe.Pointer(state)), 0, 0, 0); err != 0 {
 		fmt.Printf("error recovering from raw mode: %v", err)
 	}

@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/Nukambe/go-nav/internal/commands"
+	"github.com/Nukambe/go-nav/internal/nav"
 	"github.com/Nukambe/go-nav/internal/raw"
 	"os"
 	"os/signal"
@@ -20,7 +21,18 @@ func main() {
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 	go raw.HandleInterrupt(state, sigChan)
 
+	navDir := nav.Directory{}
+	if wd, err := os.Getwd(); err != nil {
+		fmt.Println("could not get current directory:", err)
+		raw.HandleExit(state, 1)
+	} else {
+		navDir.Pwd = wd
+		navDir.GetDirectory()
+	}
+
 	for {
+		raw.ClearScreen()
+		raw.DrawScreen(&navDir)
 		cmd, ok := commands.ReadCommand()
 		if ok != nil {
 			fmt.Printf("error reading input: %s", cmd)
