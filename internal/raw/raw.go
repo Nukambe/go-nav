@@ -55,3 +55,10 @@ func HandleExit(state *syscall.Termios, code int) {
 	restoreRawMode(state)
 	os.Exit(code)
 }
+
+func TernaryString(b bool, t string, f string) string {
+	if b {
+		return t
+	}
+	return f
+}
