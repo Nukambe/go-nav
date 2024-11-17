@@ -38,7 +38,7 @@ func DrawScreen(dir *nav.Directory) {
 	for i, directory := range dir.Directories { // print all directories
 		if i == dir.Target {
 			fmt.Printf(" ⮞ /%s ➝ ", directory)
-			fmt.Printf("\033[90m%s\033[0m\n", directory)
+			fmt.Printf("\033[90m%s\033[0m\n", dir.GetPreview())
 		} else {
 			fmt.Printf("   /%s\n", directory)
 		}
