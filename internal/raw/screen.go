@@ -59,7 +59,7 @@ func getScreenSize() (int, int, error) {
 		syscall.TIOCGWINSZ: requests the terminal's size.
 		This method works only on Unix-like systems (Linux, macOS).
 	*/
-
+	// #nosec G103: Use of syscall is intentional and reviewed
 	_, _, err := syscall.Syscall(syscall.SYS_IOCTL, uintptr(syscall.Stdin), uintptr(syscall.TIOCGWINSZ), uintptr(unsafe.Pointer(&ws)))
 	if err != 0 {
 		return 0, 0, fmt.Errorf("error getting terminal size: %v", err)
