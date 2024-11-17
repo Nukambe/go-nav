@@ -35,8 +35,13 @@ func DrawScreen(dir *nav.Directory) {
 	fmt.Println(strings.Repeat("-", width))         // print line across window
 
 	fmt.Println("Directories:")
-	for _, directory := range dir.Directories { // print all directories
-		fmt.Printf("	/%s\n", directory)
+	for i, directory := range dir.Directories { // print all directories
+		if i == dir.Target {
+			fmt.Printf(" ⮞ /%s ➝ ", directory)
+			fmt.Printf("\033[90m%s\033[0m\n", directory)
+		} else {
+			fmt.Printf("   /%s\n", directory)
+		}
 	}
 
 	fmt.Println("Files:")

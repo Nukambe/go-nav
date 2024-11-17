@@ -9,7 +9,7 @@ type Directory struct {
 	Pwd         string
 	Directories []string
 	Files       []string
-	Cursor      int
+	Target      int
 }
 
 func (dir *Directory) GetDirectory() {
