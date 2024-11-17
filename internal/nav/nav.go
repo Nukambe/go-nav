@@ -3,6 +3,7 @@ package nav
 import (
 	"fmt"
 	"os"
+	"strings"
 )
 
 type Directory struct {
@@ -26,4 +27,14 @@ func (dir *Directory) GetDirectory() {
 			dir.Files = append(dir.Files, item.Name())
 		}
 	}
+}
+
+func (dir *Directory) GetPreview() string {
+	next := Directory{Pwd: fmt.Sprintf("%s/%s", dir.Pwd, dir.Directories[dir.Target])}
+	next.GetDirectory()
+
+	if len(next.Directories) < 1 {
+		return "no subdirectories..."
+	}
+	return "/" + strings.Join(next.Directories, ", /")
 }
