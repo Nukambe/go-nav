@@ -22,6 +22,7 @@ func InitCommands() Commands {
 	cmds.registerCommand(upCommand)
 	cmds.registerCommand(downCommand)
 	cmds.registerCommand(rightCommand)
+	cmds.registerCommand(leftCommand)
 	return cmds
 }
 
@@ -55,7 +56,7 @@ func (cmds Commands) ReadCommand(state *syscall.Termios, dir *nav.Directory) {
 		case 67:
 			cmds["right"].callback(dir)
 		case 68:
-			cmds["up"].callback(dir)
+			cmds["left"].callback(dir)
 		}
 	} else {
 		fmt.Println("other key")
