@@ -2,41 +2,61 @@ package commands
 
 import (
 	"fmt"
+	"github.com/Nukambe/go-nav/internal/nav"
+	"github.com/Nukambe/go-nav/internal/raw"
 	"os"
+	"syscall"
 )
 
-func ReadCommand() (string, error) {
+type command struct {
+	name        string
+	description string
+	callback    func(directory *nav.Directory)
+}
+
+type Commands map[string]command
+
+func InitCommands() Commands {
+	cmds := Commands{}
+	cmds.registerCommand(upCommand)
+	cmds.registerCommand(downCommand)
+	cmds.registerCommand(quitCommand)
+	return cmds
+}
+
+func (cmds Commands) registerCommand(cmd command) {
+	cmds[cmd.name] = cmd
+}
+
+func (cmds Commands) ReadCommand(state *syscall.Termios, dir *nav.Directory) {
 	// buffer to read input
 	buffer := make([]byte, 3)
 
 	// read input
 	n, err := os.Stdin.Read(buffer)
 	if err != nil {
-		return "", fmt.Errorf("error reading input: %w", err)
+		fmt.Printf("error reading input: %v", err)
+		return
 	}
 
 	// quit on 'q'
 	if n == 1 && buffer[0] == 'q' {
-		return "quit", nil
+		raw.HandleExit(state, 0)
 	}
 
-	var cmd string
 	// Handle escape sequences for arrow keys
 	if n == 3 && buffer[0] == 27 && buffer[1] == 91 { // ESC + '['
 		switch buffer[2] {
 		case 65:
-			cmd = fmt.Sprintln("up")
+			cmds["up"].callback(dir)
 		case 66:
-			cmd = fmt.Sprintln("down")
+			cmds["down"].callback(dir)
 		case 67:
-			cmd = fmt.Sprintln("right")
+			cmds["up"].callback(dir)
 		case 68:
-			cmd = fmt.Sprintln("left")
-		default:
-			cmd = fmt.Sprintln("???")
+			cmds["up"].callback(dir)
 		}
 	} else {
-		cmd = fmt.Sprintln("other key")
+		fmt.Println("other key")
 	}
-	return cmd, nil
 }

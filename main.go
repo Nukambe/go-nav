@@ -11,16 +11,22 @@ import (
 )
 
 func main() {
+	// enable raw mode
 	state, err := raw.EnableRawMode()
 	if err != nil {
 		fmt.Println("Failed to enable raw mode:", err)
 		raw.HandleExit(state, 1)
 	}
 
+	// listen for signal interruption
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 	go raw.HandleInterrupt(state, sigChan)
 
+	// register commands
+	cmds := commands.InitCommands()
+
+	// init directory
 	navDir := nav.Directory{}
 	if wd, err := os.Getwd(); err != nil {
 		fmt.Println("could not get current directory:", err)
@@ -33,14 +39,6 @@ func main() {
 	for {
 		raw.ClearScreen()
 		raw.DrawScreen(&navDir)
-		cmd, ok := commands.ReadCommand()
-		if ok != nil {
-			fmt.Printf("error reading input: %s", cmd)
-			raw.HandleExit(state, 1)
-		}
-		fmt.Println("Command:", cmd)
-		if cmd == "quit" {
-			raw.HandleExit(state, 0)
-		}
+		cmds.ReadCommand(state, &navDir)
 	}
 }
