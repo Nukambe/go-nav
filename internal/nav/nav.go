@@ -13,6 +13,12 @@ type Directory struct {
 	Directories []string
 	Files       []string
 	Target      int
+	Window      Window
+}
+type Window struct {
+	Height int
+	Width  int
+	Start  int
 }
 
 func (dir *Directory) GetDirectory() {
@@ -34,6 +40,7 @@ func (dir *Directory) GetDirectory() {
 	}
 
 	dir.Target = 0
+	dir.Window.Start = 0
 }
 
 func (dir *Directory) GetPreview() string {

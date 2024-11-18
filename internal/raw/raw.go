@@ -52,8 +52,19 @@ func HandleInterrupt(state *syscall.Termios, c chan os.Signal) {
 }
 
 func HandleExit(state *syscall.Termios, code int) {
+	resetCursor()
 	restoreRawMode(state)
 	os.Exit(code)
+}
+
+func hideCursor() {
+	fmt.Print("\033[?25l") // hide cursor
+	fmt.Print("\033[1;1H") // move cursor one line up
+}
+
+func resetCursor() {
+	fmt.Print("\033[?25h")     // show cursor
+	fmt.Print("\033[H\033[2J") // Reset to top-left and clear screen
 }
 
 func TernaryString(b bool, t string, f string) string {
