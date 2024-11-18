@@ -50,5 +50,16 @@ func (dir *Directory) GetPreview() string {
 	if len(next.Directories) < 1 {
 		return NO_SUBDIRECTORIES
 	}
-	return "/" + strings.Join(next.Directories, ", /")
+
+	preview := strings.Join(next.Directories, ", /")
+	targetPadding := 6 // " ,>, , ,->, " = 6
+	extraPadding := 2
+	maxLen := dir.Window.Width - len(dir.Directories[dir.Target]) - targetPadding - extraPadding
+	if maxLen < 0 {
+		return "invalid width"
+	}
+	if len(preview) > maxLen {
+		preview = preview[:maxLen-3] + "..."
+	}
+	return "/" + preview
 }

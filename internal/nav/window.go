@@ -34,7 +34,7 @@ func (dir *Directory) GetDirectoryText(i int) string {
 		target = ">"
 		preview = fmt.Sprintf(" → \u001B[90m%s\u001B[0m", dir.GetPreview())
 	}
-	if i == dir.End() {
+	if i == dir.End()-1 {
 		end = ""
 	}
 
