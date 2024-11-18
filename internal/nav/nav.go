@@ -78,16 +78,20 @@ func (dir *Directory) OpenTargetDirectory() error {
 	switch runtime.GOOS {
 	case "windows":
 		// On Windows, use cmd.exe to open a new terminal and run commands
+		// #nosec G204: wd is trusted and not user input
 		cmd = exec.Command("cmd.exe", "/c", "start", "cmd.exe", "/K", fmt.Sprintf("cd %s", wd))
 	case "darwin":
 		// On macOS, use the `open` command with Terminal
+		// #nosec G204: wd is trusted and not user input
 		cmd = exec.Command("open", "-a", "Terminal", wd)
 	case "linux":
 		if isWSL() {
 			// For WSL, open a new WSL terminal, change directory, and keep it open
+			// #nosec G204: wd is trusted and not user input
 			cmd = exec.Command("cmd.exe", "/c", "start", "wsl.exe", "bash", "-c", fmt.Sprintf("cd %s && exec bash", wd))
 		} else {
 			// For native Linux, open a new terminal (gnome-terminal, xterm, etc.)
+			// #nosec G204: wd is trusted and not user input
 			cmd = exec.Command("gnome-terminal", "--", "bash", "-c", fmt.Sprintf("cd %s; exec bash", wd))
 		}
 	default:
