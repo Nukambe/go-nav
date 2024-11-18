@@ -25,27 +25,27 @@ func ClearScreen() {
 }
 
 func DrawScreen(dir *nav.Directory) {
-	width, _, err := getScreenSize()
+	hideCursor()
+
+	width, height, err := GetScreenSize()
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
+	offset := 2 // reserved lines
+	dir.Window.Height = height - offset
+	dir.Window.Width = width
 
 	end := ""
 	if dir.Pwd != "/" {
 		end = "/"
 	}
 	fmt.Printf("Working Directory: %s%s\n", dir.Pwd, end) // print working directory
-	fmt.Println(strings.Repeat("-", width))               // print line across window
+	fmt.Println(strings.Repeat("-", dir.Window.Width))    // print line across window
 
-	fmt.Println("Directories:")
-	for i, directory := range dir.Directories { // print all directories
-		if i == dir.Target {
-			fmt.Printf(" ⮞ /%s ➝ ", directory)
-			fmt.Printf("\033[90m%s\033[0m\n", dir.GetPreview())
-		} else {
-			fmt.Printf("   /%s\n", directory)
-		}
+	//fmt.Println("Directories:")
+	for i := dir.Window.Start; i < dir.End(); i++ {
+		fmt.Print(dir.GetDirectoryText(i))
 	}
 
 	//fmt.Println("Files:")
@@ -54,9 +54,9 @@ func DrawScreen(dir *nav.Directory) {
 	//}
 }
 
-// getScreenSize
+// GetScreenSize
 // gets the width and height of the terminal (Linux, macOS)
-func getScreenSize() (int, int, error) {
+func GetScreenSize() (int, int, error) {
 	var ws struct {
 		Row    uint16
 		Col    uint16
@@ -69,7 +69,7 @@ func getScreenSize() (int, int, error) {
 		This method works only on Unix-like systems (Linux, macOS).
 	*/
 	// #nosec G103: Use of syscall is intentional and reviewed
-	_, _, err := syscall.Syscall(syscall.SYS_IOCTL, uintptr(syscall.Stdin), uintptr(syscall.TIOCGWINSZ), uintptr(unsafe.Pointer(&ws)))
+	_, _, err := syscall.Syscall(syscall.SYS_IOCTL, uintptr(syscall.Stdout), uintptr(syscall.TIOCGWINSZ), uintptr(unsafe.Pointer(&ws)))
 	if err != 0 {
 		return 0, 0, fmt.Errorf("error getting terminal size: %v", err)
 	}
