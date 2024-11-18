@@ -63,10 +63,12 @@ func hideCursor() {
 }
 
 func resetCursor() {
-	fmt.Print("\033[?25h")     // show cursor
-	fmt.Print("\033[H\033[2J") // Reset to top-left and clear screen
+	fmt.Print("\033[?25h") // show cursor
+	fmt.Println()
+	//fmt.Print("\033[H\033[2J") // Reset to top-left and clear screen
 }
 
+// change to empty interface?
 func TernaryString(b bool, t string, f string) string {
 	if b {
 		return t
