@@ -23,6 +23,7 @@ func InitCommands() Commands {
 	cmds.registerCommand(downCommand)
 	cmds.registerCommand(rightCommand)
 	cmds.registerCommand(leftCommand)
+	cmds.registerCommand(enterCommand)
 	return cmds
 }
 
@@ -44,6 +45,13 @@ func (cmds Commands) ReadCommand(state *syscall.Termios, dir *nav.Directory) {
 	// quit on 'q'
 	if n == 1 && buffer[0] == 'q' {
 		raw.HandleExit(state, 0)
+		// return
+	}
+
+	// Enter key (ASCII 10)
+	if n == 1 && buffer[0] == 10 {
+		cmds["enter"].callback(dir)
+		return
 	}
 
 	// Handle escape sequences for arrow keys
@@ -51,14 +59,19 @@ func (cmds Commands) ReadCommand(state *syscall.Termios, dir *nav.Directory) {
 		switch buffer[2] {
 		case 65:
 			cmds["up"].callback(dir)
+			return
 		case 66:
 			cmds["down"].callback(dir)
+			return
 		case 67:
 			cmds["right"].callback(dir)
+			return
 		case 68:
 			cmds["left"].callback(dir)
+			return
 		}
 	} else {
 		fmt.Println("other key")
+		return
 	}
 }

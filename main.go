@@ -32,6 +32,7 @@ func main() {
 		fmt.Println("could not get current directory:", err)
 		raw.HandleExit(state, 1)
 	} else {
+		navDir.Terminal = state
 		navDir.Pwd = wd
 		navDir.GetDirectory()
 	}
