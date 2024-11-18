@@ -4,15 +4,9 @@
 
 **Go-Nav** is an interactive CLI tool designed to simplify filesystem navigation. Go-Nav provides a user-friendly interface with features to make CLI navigation faster and more efficient.
 
----
-
 ## Features
 
 - **Interactive Navigation**: Explore your filesystem interactively using arrow keys.
-- **File and Directory Management**: Perform basic operations like opening files or changing directories.
-- **Terminal-Friendly**: Lightweight and optimized for terminal environments.
-
----
 
 ## Installation
 
@@ -23,8 +17,6 @@
    ```
 3. Add the installation directory (e.g., `$GOPATH/bin`) to your `PATH` environment variable if it's not already included.
 
----
-
 ## Usage
 
 Run the program:
@@ -33,28 +25,20 @@ go-nav
 ```
 
 ### Navigation Controls
-- **Up/Down Arrow Keys**: Move up and down through files and directories.
-- **Left/Right Arrow Keys**: Move to parent or subdirectory.
-- **Enter**: Open a directory or file.
-- **Backspace**: Move up one directory level.
+- **Up/Down Arrow Keys**: Move up and down to select a directories.
+- **Left/Right Arrow Keys**: Move to parent or selected subdirectory.
+- **Enter**: Open a directory in a new window.
 - **`q`**: Quit the program.
-
----
 
 ## Key Features
 
 ### Directory View
-- Lists all files and directories in the current path.
+- Lists all directories in the current path.
 - Highlights the current selection for easy tracking.
+- User-friendly scrolling for long lists.
 
-### File Preview
-- Preview text files directly in the terminal.
-- (Optional) Open non-text files with the system's default program.
-
-### Search
-- Quickly search for files and directories by name.
-
----
+### Directory Preview
+- Show subdirectories of the current selected directory without opening or navigating to it.
 
 ## Development
 
@@ -70,15 +54,13 @@ cd go-nav
 
 Build the program:
 ```bash
-go build -o go-nav
+go build
 ```
 
 Run locally:
 ```bash
 ./go-nav
 ```
-
----
 
 ## Contributing
 
@@ -95,12 +77,8 @@ Contributions are welcome! To contribute:
    ```
 4. Open a pull request.
 
----
-
 ## Support
 
 For issues or feature requests, open an issue on the [GitHub repository](https://github.com/Nukambe/go-nav).
-
----
 
 Enjoy a smoother filesystem navigation experience with Go-Nav! 🎉
